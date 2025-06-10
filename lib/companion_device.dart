@@ -2,7 +2,12 @@
 import 'companion_device_platform_interface.dart';
 
 class CompanionDevice {
-  Future<String?> getPlatformVersion() {
-    return CompanionDevicePlatform.instance.getPlatformVersion();
+
+  Future<void> init() {
+    return CompanionDevicePlatform.instance.init();
+  }
+
+  Future<void> associate() {
+    return CompanionDevicePlatform.instance.associate();
   }
 }

@@ -23,7 +23,11 @@ abstract class CompanionDevicePlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+  Future<void> init() {
+    throw UnimplementedError('init() has not been implemented.');
+  }
+
+  Future<void> associate() {
+    throw UnimplementedError('associate() has not been implemented.');
   }
 }

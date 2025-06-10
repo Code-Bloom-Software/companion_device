@@ -10,8 +10,12 @@ class MethodChannelCompanionDevice extends CompanionDevicePlatform {
   final methodChannel = const MethodChannel('companion_device');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
+  Future<void> init() async {
+    await methodChannel.invokeMethod<void>('init');
+  }
+
+  @override
+  Future<void> associate() async {
+    await methodChannel.invokeMethod<void>('associate');
   }
 }
