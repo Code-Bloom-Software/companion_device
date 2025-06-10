@@ -1,3 +1,5 @@
+import 'package:companion_device/associated_device.dart';
+import 'package:companion_device/companion_device_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -15,7 +17,35 @@ class MethodChannelCompanionDevice extends CompanionDevicePlatform {
   }
 
   @override
-  Future<void> associate() async {
-    await methodChannel.invokeMethod<void>('associate');
+  Future<AssociatedDevice> associate({
+    required bool isSingleDevice,
+    required Duration timeout,
+    CompanionDeviceFilter? filter
+  }) async {
+    final result = await methodChannel.invokeMethod<Map>('associate',
+        [isSingleDevice, timeout.inMilliseconds,
+          filter?.nameRegex, filter?.deviceAddress, filter?.uuids]);
+
+    return AssociatedDevice(
+        associationId: result?['association_id'],
+        name: result?['name'],
+        deviceAddress: result?['mac_address']
+    );
+  }
+
+  @override
+  Future<void> disassociate({int? associationId, String? deviceAddress}) async {
+    await methodChannel.invokeMethod<void>('disassociate', [associationId, deviceAddress]);
+  }
+
+  @override
+  Future<List<AssociatedDevice>> getAssociations() async {
+    final result =  await methodChannel.invokeMethod<List>('associations');
+
+    return result?.map((e) => AssociatedDevice(
+        associationId: e['association_id'],
+        name: e['name'],
+        deviceAddress: e['mac_address']
+    )).toList() ?? [];
   }
 }
