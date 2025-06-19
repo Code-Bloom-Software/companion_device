@@ -144,6 +144,9 @@ class CompanionDevicePlugin: FlutterPlugin, MethodCallHandler, ActivityAware, Ac
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
-        return service.handleActivityResult(requestCode, resultCode, data)
+        if (::service.isInitialized) {
+            return service.handleActivityResult(requestCode, resultCode, data)
+        }
+        return false
     }
 }
